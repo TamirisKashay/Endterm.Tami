@@ -1,38 +1,50 @@
 package controller;
 
+import model.Author;
 import model.BookBase;
 import model.PrintedBook;
 import model.EBook;
+import repository.AuthorRepository;
 import service.LibraryService;
 
 public class Main {
     public static void main(String[] args) {
-        LibraryService service = new LibraryService();
+        LibraryService libraryService = new LibraryService();
+        AuthorRepository authorRepo = new AuthorRepository();
 
-        System.out.println("--- Library System Starting ---");
+        System.out.println("=== Library Management System Initializing ===");
 
         try {
+            Author author1 = new Author("George Orwell", "British");
+            Author author2 = new Author("Dan Brown", "American");
 
-            BookBase book1 = new PrintedBook(0, "1984", 0.5);
-            BookBase book2 = new EBook(0, "Digital Fortress", "PDF");
+            System.out.println("\n[Step 1] Saving Authors...");
+            authorRepo.create(author1);
+            authorRepo.create(author2);
 
-            System.out.println("\nAdding books...");
-            service.addBook(book1);
-            service.addBook(book2);
+            BookBase book1 = new PrintedBook(0, "1984", 0.85); // Печатная книга
+            BookBase book2 = new EBook(0, "Digital Fortress", "EPUB"); // Электронная книга
 
-            processBook(book1);
-            processBook(book2);
+            System.out.println("\n[Step 2] Adding Books via Service Layer...");
+            libraryService.addBook(book1);
+            libraryService.addBook(book2);
 
-            System.out.println("\n--- Operation Successful ---");
+            System.out.println("\n[Step 3] Processing Books Polymorphically:");
+            processBookDetails(book1);
+            processBookDetails(book2);
+
+            System.out.println("\n=== All operations completed successfully! ===");
 
         } catch (Exception e) {
-            System.err.println("Error occurred: " + e.getMessage());
+            System.err.println("\nCritical Error: " + e.getMessage());
         }
     }
 
-    public static void processBook(BookBase book) {
+    public static void processBookDetails(BookBase book) {
+        System.out.println("------------------------------------");
         book.printBaseStatus();
         book.displayInfo();
-        System.out.println("Late fee for 5 days: $" + book.calculateLateFee(5));
+        System.out.println("Type: " + book.getBookType());
+        System.out.println("Calculated Late Fee (7 days): $" + book.calculateLateFee(7));
     }
 }
