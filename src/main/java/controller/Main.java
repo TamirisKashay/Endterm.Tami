@@ -6,6 +6,9 @@ import model.PrintedBook;
 import model.EBook;
 import repository.AuthorRepository;
 import service.LibraryService;
+import utils.DatabaseConnection;
+
+import java.sql.*;
 
 public class Main {
     public static void main(String[] args) {
