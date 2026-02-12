@@ -1,8 +1,13 @@
 package com.example.library.model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 
-@MappedSuperclass
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+
 public abstract class Book {
 
     @Id
