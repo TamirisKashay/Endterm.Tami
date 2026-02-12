@@ -11,6 +11,8 @@ public abstract class Book {
 
     public String title;
     public String author;
+
+    @Column(name = "publish_year")
     public int year;
 
     public Long getId() {
